@@ -44,7 +44,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="layouts-without-navbar.html" class="menu-link">
+                    <a href="<?php echo BASE_URL . $Admin_Url ?>sub_category/index.php" class="menu-link">
                         <div data-i18n="Without navbar">Sub</div>
                     </a>
                 </li>

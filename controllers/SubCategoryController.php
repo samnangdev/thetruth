@@ -1,50 +1,61 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once __DIR__ . '/../connection/db.php';
 require_once __DIR__ . '/../config/config.php';
 
 if (isset($_POST['btnSave'])) {
     $id = isset($_POST['id']) ? $_POST['id'] : null;
-    $MainCategoryController = new MainCategoryController();
+    $SubCategoryController = new SubCategoryController();
     if (!empty($id)) {
-        $MainCategoryController->update();
+        $SubCategoryController->update();
     } else {
-        $MainCategoryController->createMainCategory();
+        $SubCategoryController->create();
     }
 }
 
 if (isset($_GET['delet_id'])) {
     $id = $_GET['delet_id'];                                                                                        
-    $MainCategoryController = new MainCategoryController();
-    $MainCategoryController->deleteMainCategory($id);
+    $SubCategoryController = new SubCategoryController();
+    $SubCategoryController->delete($id);
 }
 
-class MainCategoryController {
-    public function listMainCategory() {
+class SubCategoryController {
+    public function list() {
         global $conn;  // Use the global connection variable
-
-        // Query to fetch users
+    
+        // Query to fetch subcategories along with their main category name
         $query = "
-            SELECT * FROM main_category_tbl WHERE Status = 1";
+            SELECT sc.ID, sc.NAME, sc.DESCRIPTION, sc.SLUG, sc.STATUS, 
+            mc.NAME AS MAIN_CATEGORY_NAME
+            FROM sub_category_tbl sc
+            LEFT JOIN main_category_tbl mc ON sc.main_category_id = mc.ID
+            WHERE sc.STATUS = 1 
+            ORDER BY sc.ID ASC";  // Order by ID
+    
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
-
-        // Store results in the $users array
+    
+        // Store results in an array
         $rows = [];
         while ($row = oci_fetch_assoc($stid)) {
             $rows[] = $row;
         }
-
+    
         // Free the statement
         oci_free_statement($stid);
-
+    
         return $rows;
     }
-    public function createMainCategory() {
+    
+    public function create() {
         global $conn;
         $name = $_POST['TxtName'];
         $status = $_POST['TxtStatus'];
         $desc = $_POST['TxtDesc'];
+        $main_category_id = $_POST['TxtMainCategoryID'];
     
         // Generate Slug
         $slug = strtolower($name);           // Convert to lowercase
@@ -52,8 +63,8 @@ class MainCategoryController {
         $slug = trim($slug, '_');             // Remove trailing "_"
     
         // Prepare SQL query (no quotes around column names)
-        $sql = "INSERT INTO main_category_tbl (name, slug, description, status) 
-                VALUES (:name, :slug, :description, :status)";
+        $sql = "INSERT INTO sub_category_tbl (name, slug, description, status, main_category_id) 
+                VALUES (:name, :slug, :description, :status, :main_category_id)";
         
         // Parse the SQL query
         $stid = oci_parse($conn, $sql);
@@ -63,6 +74,7 @@ class MainCategoryController {
         oci_bind_by_name($stid, ":slug", $slug);
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
+        oci_bind_by_name($stid, ":main_category_id", $main_category_id);
         
         // Execute the query
         $result = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
@@ -71,13 +83,10 @@ class MainCategoryController {
         if ($result) {
             oci_commit($conn);
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
-            header('location:' . BASE_URL . 'views/admin/main_category/index.php');
+            header('location:' . BASE_URL . 'views/admin/sub_category/index.php');
             exit();
         } else {
             $e = oci_error($stid);
-            ini_set('display_errors', 1);
-            ini_set('display_startup_errors', 1);
-            error_reporting(E_ALL);
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
             echo "Error inserting record: " . $e['message'];
         }
@@ -90,6 +99,7 @@ class MainCategoryController {
         $name = $_POST['TxtName'];
         $desc = $_POST['TxtDesc'];
         $status = $_POST['TxtStatus'];
+        $main_category_id = $_POST['TxtMainCategoryID'];
 
         // Generate Slug
         $slug = strtolower($name);           // Convert to lowercase
@@ -97,11 +107,12 @@ class MainCategoryController {
         $slug = trim($slug, '_');             // Remove trailing "_"
     
         // Prepare SQL update query
-        $sql = "UPDATE Main_Category_Tbl 
+        $sql = "UPDATE sub_category_tbl 
                 SET name = :name, 
+                    slug = :slug,
                     description = :description, 
                     status = :status,
-                    slug = :slug
+                    main_category_id = :main_category_id
                 WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
@@ -112,27 +123,29 @@ class MainCategoryController {
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
         oci_bind_by_name($stid, ":slug", $slug);
+        oci_bind_by_name($stid, ":main_category_id", $main_category_id);
     
         $result = oci_execute($stid);
     
         if ($result) {
             oci_commit($conn);
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
-            header('Location: ' . BASE_URL . 'views/admin/main_category/index.php');
+            header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
             exit();
         } else {
-            $e = oci_error($stid);
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
+            // header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
+            $e = oci_error($stid);
             echo "Error updating record: " . $e['message'];
         }
     
         oci_free_statement($stid);
     }
-    public function editMainCategory($id) {
+    public function edit($id) {
         
         global $conn;
         $query = "
-            SELECT * FROM main_category_tbl WHERE id = :id
+            SELECT * FROM sub_category_tbl WHERE id = :id
         ";
     
         $stid = oci_parse($conn, $query);
@@ -147,11 +160,11 @@ class MainCategoryController {
     
         return $rows;
     }
-    public function deleteMainCategory($id) {
+    public function delete($id) {
         global $conn; // Use global database connection
     
         // Prepare update query to set STATUS = 0
-        $sql = "UPDATE Main_Category_Tbl SET STATUS = 0 WHERE id = :id";
+        $sql = "UPDATE sub_category_tbl SET STATUS = 0 WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":id", $id);
@@ -162,12 +175,13 @@ class MainCategoryController {
         if ($result) {
             oci_commit($conn); // Commit transaction
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
-            header('Location: ' . BASE_URL . 'views/admin/main_category/index.php');
+            header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
             exit();
         } else {
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
-            $e = oci_error($stid);
-            echo "Error updating record: " . $e['message'];
+            header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
+            // $e = oci_error($stid);
+            // echo "Error updating record: " . $e['message'];
         }
     
         oci_free_statement($stid);
