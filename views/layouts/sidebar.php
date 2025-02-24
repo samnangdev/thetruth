@@ -51,7 +51,7 @@
             </ul>
         </li>
 
-        <li class="menu-header small text-uppercase">
+        <!-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
         </li>
         <li class="menu-item">
@@ -117,12 +117,12 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <!-- Components -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li>
+        <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Components</span></li> -->
 
         <!-- User interface -->
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">User interface</div>
@@ -224,10 +224,10 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
 
         <!-- Extended components -->
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="javascript:void(0)" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-copy"></i>
                 <div data-i18n="Extended UI">Extended UI</div>
@@ -244,19 +244,19 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
 
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="icons-boxicons.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-crown"></i>
                 <div data-i18n="Boxicons">Boxicons</div>
             </a>
-        </li>
+        </li> -->
 
         <!-- Forms & Tables -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li>
+        <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Forms &amp; Tables</span></li> -->
         <!-- Forms -->
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Form Elements</div>
@@ -291,16 +291,16 @@
                     </a>
                 </li>
             </ul>
-        </li>
+        </li> -->
         <!-- Tables -->
-        <li class="menu-item">
+        <!-- <li class="menu-item">
             <a href="tables-basic.html" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-table"></i>
                 <div data-i18n="Tables">Tables</div>
             </a>
-        </li>
+        </li> -->
         <!-- Misc -->
-        <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
+        <!-- <li class="menu-header small text-uppercase"><span class="menu-header-text">Misc</span></li>
         <li class="menu-item">
             <a href="https://github.com/themeselection/sneat-html-admin-template-free/issues" target="_blank"
                 class="menu-link">
@@ -314,6 +314,6 @@
                 <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Documentation">Documentation</div>
             </a>
-        </li>
+        </li> -->
     </ul>
 </aside>

@@ -24,27 +24,24 @@ if (isset($_GET['delet_id'])) {
 
 class SubCategoryController {
     public function list() {
-        global $conn;  // Use the global connection variable
-    
-        // Query to fetch subcategories along with their main category name
+        global $conn;  
+
         $query = "
             SELECT sc.ID, sc.NAME, sc.DESCRIPTION, sc.SLUG, sc.STATUS, 
             mc.NAME AS MAIN_CATEGORY_NAME
             FROM sub_category_tbl sc
             LEFT JOIN main_category_tbl mc ON sc.main_category_id = mc.ID
             WHERE sc.STATUS = 1 
-            ORDER BY sc.ID ASC";  // Order by ID
+            ORDER BY sc.ID ASC";
     
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
     
-        // Store results in an array
         $rows = [];
         while ($row = oci_fetch_assoc($stid)) {
             $rows[] = $row;
         }
     
-        // Free the statement
         oci_free_statement($stid);
     
         return $rows;
@@ -62,24 +59,19 @@ class SubCategoryController {
         $slug = preg_replace('/[^a-z0-9]+/i', '_', $slug); // Replace spaces & special chars with "_"
         $slug = trim($slug, '_');             // Remove trailing "_"
     
-        // Prepare SQL query (no quotes around column names)
         $sql = "INSERT INTO sub_category_tbl (name, slug, description, status, main_category_id) 
                 VALUES (:name, :slug, :description, :status, :main_category_id)";
         
-        // Parse the SQL query
         $stid = oci_parse($conn, $sql);
         
-        // Bind parameters
         oci_bind_by_name($stid, ":name", $name);
         oci_bind_by_name($stid, ":slug", $slug);
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
         oci_bind_by_name($stid, ":main_category_id", $main_category_id);
         
-        // Execute the query
         $result = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
         
-        // Check if the query was successful
         if ($result) {
             oci_commit($conn);
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
@@ -94,8 +86,7 @@ class SubCategoryController {
     public function update() {
         global $conn;
     
-        // Retrieve form data
-        $id = $_POST['id'];  // Hidden input field from the form
+        $id = $_POST['id'];
         $name = $_POST['TxtName'];
         $desc = $_POST['TxtDesc'];
         $status = $_POST['TxtStatus'];
@@ -106,7 +97,6 @@ class SubCategoryController {
         $slug = preg_replace('/[^a-z0-9]+/i', '_', $slug); // Replace spaces & special chars with "_"
         $slug = trim($slug, '_');             // Remove trailing "_"
     
-        // Prepare SQL update query
         $sql = "UPDATE sub_category_tbl 
                 SET name = :name, 
                     slug = :slug,
@@ -117,7 +107,6 @@ class SubCategoryController {
     
         $stid = oci_parse($conn, $sql);
     
-        // Bind parameters
         oci_bind_by_name($stid, ":id", $id);
         oci_bind_by_name($stid, ":name", $name);
         oci_bind_by_name($stid, ":description", $desc);
@@ -134,9 +123,9 @@ class SubCategoryController {
             exit();
         } else {
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
-            // header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
-            $e = oci_error($stid);
-            echo "Error updating record: " . $e['message'];
+            header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
+            // $e = oci_error($stid);
+            // echo "Error updating record: " . $e['message'];
         }
     
         oci_free_statement($stid);
@@ -153,7 +142,6 @@ class SubCategoryController {
     
         oci_execute($stid);
     
-        // Fetch the user data
         $rows = oci_fetch_assoc($stid);
         
         oci_free_statement($stid);
@@ -161,19 +149,17 @@ class SubCategoryController {
         return $rows;
     }
     public function delete($id) {
-        global $conn; // Use global database connection
-    
-        // Prepare update query to set STATUS = 0
+        global $conn; 
+
         $sql = "UPDATE sub_category_tbl SET STATUS = 0 WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":id", $id);
     
-        // Execute the query
         $result = oci_execute($stid);
     
         if ($result) {
-            oci_commit($conn); // Commit transaction
+            oci_commit($conn);
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
             header('Location: ' . BASE_URL . 'views/admin/sub_category/index.php');
             exit();
@@ -186,5 +172,4 @@ class SubCategoryController {
     
         oci_free_statement($stid);
     }
-    
 }

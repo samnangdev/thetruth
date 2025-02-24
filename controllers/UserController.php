@@ -24,9 +24,8 @@ if (isset($_GET['delet_id'])) {
 
 class UserController {
     public function listUser() {
-        global $conn;  // Use the global connection variable
+        global $conn;  
 
-        // Query to fetch users
         $query = "
             SELECT 
                 u.USERID,
@@ -43,13 +42,11 @@ class UserController {
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
 
-        // Store results in the $users array
         $users = [];
         while ($row = oci_fetch_assoc($stid)) {
             $users[] = $row;
         }
 
-        // Free the statement
         oci_free_statement($stid);
 
         return $users;
@@ -57,15 +54,13 @@ class UserController {
     public function updateUser() {
         global $conn;
     
-        // Retrieve form data
-        $id = $_POST['id'];  // Hidden input field from the form
+        $id = $_POST['id'];
         $username = $_POST['TxtUsername'];
         $email = $_POST['TxtEmail'];
-        $password = $_POST['TxtPassword'];  // You may want to hash this before storing
+        $password = $_POST['TxtPassword'];
         $userTypeID = $_POST['TxtUserTypeID'];
-        $status = isset($_POST['TxtStatus']) ? $_POST['TxtStatus'] : 1; // Default active
+        $status = isset($_POST['TxtStatus']) ? $_POST['TxtStatus'] : 1;
     
-        // Prepare SQL update query
         $sql = "UPDATE User_Tbl 
                 SET USERNAME = :username, 
                     EMAIL = :email, 
@@ -76,7 +71,6 @@ class UserController {
     
         $stid = oci_parse($conn, $sql);
     
-        // Bind parameters
         oci_bind_by_name($stid, ":userid", $id);
         oci_bind_by_name($stid, ":username", $username);
         oci_bind_by_name($stid, ":email", $email);
@@ -124,7 +118,6 @@ class UserController {
     
         oci_execute($stid);
     
-        // Fetch the user data
         $user = oci_fetch_assoc($stid);
     
         oci_free_statement($stid);
@@ -132,26 +125,19 @@ class UserController {
         return $user;
     }
     public function createUser() {
-        global $conn;  // Use the global connection variable
-        // if (!$conn) {
-        //     echo "Error: Unable to connect to the database.";
-        //     exit;
-        // }
-        // Retrieve form data
+        global $conn;  
+        
         $username = $_POST['TxtUsername'];
         $email = $_POST['TxtEmail'];
         $password = $_POST['TxtPassword'];
-        $userTypeID = $_POST['TxtUserTypeID'];  // Assume user type is selected
-        $status = 1;  // Active by default
-        //         print_r($_POST);
-        // exit();
-        // Prepare SQL statement
+        $userTypeID = $_POST['TxtUserTypeID'];
+        $status = 1; 
+
         $sql = "INSERT INTO User_Tbl (Username, Email, Password, UserTypeID, Status) 
                 VALUES (:username, :email, :password, :usertypeid, :status)";
         
         $stid = oci_parse($conn, $sql);
         
-        // Bind parameters
         oci_bind_by_name($stid, ":username", $username);
         oci_bind_by_name($stid, ":email", $email);
         oci_bind_by_name($stid, ":password", $password);
@@ -172,26 +158,25 @@ class UserController {
         }
     }
     public function deleteUser($id) {
-        global $conn; // Use global database connection
-    
-        // Prepare update query to set STATUS = 0
+        global $conn; 
+
         $sql = "UPDATE User_Tbl SET STATUS = 0 WHERE USERID = :userid";
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":userid", $id);
     
-        // Execute the query
         $result = oci_execute($stid);
     
         if ($result) {
-            oci_commit($conn); // Commit transaction
+            oci_commit($conn);
             $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
-            header('Location: ' . BASE_URL . 'views/admin/user/index.php'); // Redirect after updating
+            header('Location: ' . BASE_URL . 'views/admin/user/index.php');
             exit();
         } else {
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
-            $e = oci_error($stid);
-            echo "Error updating record: " . $e['message'];
+            header('Location: ' . BASE_URL . 'views/admin/user/index.php');
+            // $e = oci_error($stid);
+            // echo "Error updating record: " . $e['message'];
         }
     
         oci_free_statement($stid);
