@@ -174,24 +174,24 @@ class UserController {
     public function deleteUser($id) {
         global $conn; // Use global database connection
     
-        // Prepare delete query
-        $sql = "DELETE FROM User_Tbl WHERE USERID = :userid";
-        
+        // Prepare update query to set STATUS = 0
+        $sql = "UPDATE User_Tbl SET STATUS = 0 WHERE USERID = :userid";
+    
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":userid", $id);
-        
+    
         // Execute the query
         $result = oci_execute($stid);
-        
+    
         if ($result) {
-            $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
             oci_commit($conn); // Commit transaction
-            header('Location: ' . BASE_URL . 'views/admin/user/index.php'); // Redirect after deletion
+            $_SESSION['snackbar'] = ['message' => 'Action completed successfully! ', 'type' => 'success'];
+            header('Location: ' . BASE_URL . 'views/admin/user/index.php'); // Redirect after updating
             exit();
         } else {
             $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
             $e = oci_error($stid);
-            echo "Error deleting record: " . $e['message'];
+            echo "Error updating record: " . $e['message'];
         }
     
         oci_free_statement($stid);

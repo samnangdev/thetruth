@@ -19,7 +19,7 @@
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
         <li class="menu-item active">
-            <a href="index.php" class="menu-link">
+            <a href="<?php echo BASE_URL . $Admin_Url ?>index.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
@@ -31,37 +31,21 @@
                 <div data-i18n="Basic">Users</div>
             </a>
         </li>
-        <!-- Layouts -->
+        <!-- Categories -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-layout"></i>
-                <div data-i18n="Layouts">Layouts</div>
+                <div data-i18n="Layouts">Categories</div>
             </a>
-
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="layouts-without-menu.html" class="menu-link">
-                        <div data-i18n="Without menu">Without menu</div>
+                    <a href="<?php echo BASE_URL . $Admin_Url ?>main_category/index.php" class="menu-link">
+                        <div data-i18n="Without menu">Main</div>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a href="layouts-without-navbar.html" class="menu-link">
-                        <div data-i18n="Without navbar">Without navbar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-container.html" class="menu-link">
-                        <div data-i18n="Container">Container</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-fluid.html" class="menu-link">
-                        <div data-i18n="Fluid">Fluid</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
-                        <div data-i18n="Blank">Blank</div>
+                        <div data-i18n="Without navbar">Sub</div>
                     </a>
                 </li>
             </ul>
