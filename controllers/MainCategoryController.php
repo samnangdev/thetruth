@@ -92,12 +92,18 @@ class MainCategoryController {
         $name = $_POST['TxtName'];
         $desc = $_POST['TxtDesc'];
         $status = $_POST['TxtStatus'];
+
+        // Generate Slug
+        $slug = strtolower($name);           // Convert to lowercase
+        $slug = preg_replace('/[^a-z0-9]+/i', '_', $slug); // Replace spaces & special chars with "_"
+        $slug = trim($slug, '_');             // Remove trailing "_"
     
         // Prepare SQL update query
         $sql = "UPDATE Main_Category_Tbl 
                 SET name = :name, 
                     description = :description, 
-                    status = :status
+                    status = :status,
+                    slug = :slug
                 WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
@@ -107,6 +113,7 @@ class MainCategoryController {
         oci_bind_by_name($stid, ":name", $name);
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
+        oci_bind_by_name($stid, ":slug", $slug);
     
         $result = oci_execute($stid);
     

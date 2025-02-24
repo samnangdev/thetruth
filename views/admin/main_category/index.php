@@ -55,7 +55,7 @@ $title = "List Main Category";
                         <td><?php echo $No ?></td>
                         <td><?php echo $row['ID']; ?></td>
                         <td><?php echo $row['NAME']; ?></td>
-                        <td><?php echo $row['DESCRIPTION']; ?></td>
+                        <td><?php echo empty($row['DESCRIPTION']) ? 'N/A' : $row['DESCRIPTION']; ?></td>
                         <td><?php echo $row['SLUG']; ?></td>
                         <td class="text-center">
                         <?php
