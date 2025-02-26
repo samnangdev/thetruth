@@ -20,21 +20,28 @@
         <!-- Dashboard -->
         <li class="menu-item active">
             <a href="<?php echo BASE_URL . $Admin_Url ?>index.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+            <i class='menu-icon bx bx-home' ></i>
                 <div data-i18n="Analytics">Dashboard</div>
             </a>
         </li>
-        <!-- Users -->
+        <!-- Articles -->
         <li class="menu-item">
-            <a href="<?php echo BASE_URL . $Admin_Url ?>user/index.php" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Basic">Users</div>
+            <a href="<?php echo BASE_URL . $Admin_Url ?>article/index.php" class="menu-link">
+            <i class='menu-icon bx bx-news' ></i>
+                <div data-i18n="Basic">Articles</div>
+            </a>
+        </li>
+        <!-- Tags -->
+        <li class="menu-item">
+            <a href="<?php echo BASE_URL . $Admin_Url ?>tag/index.php" class="menu-link">
+            <i class='menu-icon bx bx-purchase-tag'></i></i>
+                <div data-i18n="Basic">Tags</div>
             </a>
         </li>
         <!-- Categories -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-layout"></i>
+                <i class='menu-icon bx bx-category-alt' ></i>
                 <div data-i18n="Layouts">Categories</div>
             </a>
             <ul class="menu-sub">
@@ -50,8 +57,94 @@
                 </li>
             </ul>
         </li>
+        <!-- Categories -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon bx bx-user' ></i>
+                <div data-i18n="Layouts">Users</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="<?php echo BASE_URL . $Admin_Url ?>user/index.php" class="menu-link">
+                        <div data-i18n="Without menu">User</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="<?php echo BASE_URL . $Admin_Url ?>sub_category/index.php" class="menu-link">
+                        <div data-i18n="Without navbar">User Types</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <!-- Reports -->
+        <li class="menu-item">
+            <a href="<?php echo BASE_URL . $Admin_Url ?>report/index.php" class="menu-link">
+                <i class="menu-icon tf-icons bx bxs-report"></i>
+                <div data-i18n="Basic">Reports</div>
+            </a>
+        </li>
+        
+    </ul>
+</aside>
 
-        <!-- <li class="menu-header small text-uppercase">
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    let menuItems = document.querySelectorAll(".menu-item a");
+
+    // Get stored active menu item
+    let activeMenu = localStorage.getItem("activeMenu");
+
+    if (activeMenu) {
+        document.querySelectorAll(".menu-item").forEach(item => {
+            if (item.querySelector("a").href === activeMenu) {
+                item.classList.add("active");
+            } else {
+                item.classList.remove("active");
+            }
+        });
+    }
+
+    menuItems.forEach(item => {
+        item.addEventListener("click", function () {
+            // Remove active class from all menu items
+            document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
+
+            // Add active class to the clicked menu item
+            this.parentElement.classList.add("active");
+
+            // Store active menu in localStorage
+            localStorage.setItem("activeMenu", this.href);
+        });
+    });
+});
+
+</script> -->
+
+<!-- <style>
+.menu-item.active > .menu-link {
+    background-color: rgba(0, 123, 255, 0.3); /* Light blue background */
+    border-radius: 5px;
+}
+
+.menu-item.active > .menu-link i {
+    color: inherit; /* Keep original icon color */
+}
+
+.menu-item.active > .menu-link div {
+    font-weight: normal; /* Keep text normal, not bold */
+    color: inherit; /* Keep original text color */
+}
+
+</style> -->
+
+
+
+
+
+
+
+
+<!-- <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Pages</span>
         </li>
         <li class="menu-item">
@@ -315,5 +408,3 @@
                 <div data-i18n="Documentation">Documentation</div>
             </a>
         </li> -->
-    </ul>
-</aside>
