@@ -2,15 +2,12 @@
 ob_start();
 require_once '../../../config/config.php';
 require_once '../../../connection/db.php';
-require_once BASE_PATH . 'controllers/UserController.php';
+require_once BASE_PATH . 'controllers/UserTypeController.php';
 
-$title = "List User";
-// var_dump(BASE_URL, BASE_PATH);
-// die();
-
+$title = "List User Type";
 ?>
 <h4 class="fw-bold mb-2 d-flex justify-content-between align-items-center">
-    List User
+    List User Type
     <a href="create.php" style="font-size:30px;" class="text-primary">
         <i class="bi bi-plus-square-fill"></i>
     </a>
@@ -22,19 +19,16 @@ $title = "List User";
                 <thead class="table-secondary text-center">
                     <tr>
                         <th>
+                            No.
+                        </th>
+                        <th>
                             ID
                         </th>
                         <th>
-                            Username
+                            NameKH
                         </th>
                         <th>
-                            Email
-                        </th>
-                        <th>
-                            Password
-                        </th>
-                        <th>
-                            Type
+                            NameEN
                         </th>
                         <th>
                             Status
@@ -46,18 +40,19 @@ $title = "List User";
                 </thead>
                 <tbody>
                     <?php 
-                    $UserController = new UserController();
-                    $users = $UserController->listUser();
-                    foreach ($users as $user): ?>
+                    $UserTypeController = new UserTypeController();
+                    $rows = $UserTypeController->list();
+                    foreach ($rows as $row): 
+                    $No = 1;
+                    ?>
                     <tr>
-                        <td><?php echo $user['USERID']; ?></td>
-                        <td><?php echo $user['USERNAME']; ?></td>
-                        <td><?php echo $user['EMAIL']; ?></td>
-                        <td>********</td>
-                        <td><?php echo empty($user['NAME_EN']) ? 'N/A' : $user['NAME_EN'] ?></td>
+                        <td><?php echo $No ?></td>
+                        <td><?php echo $row['ID']; ?></td>
+                        <td><?php echo empty($row['NAME_KH']) ? 'N/A' : $row['NAME_KH'] ?></td>
+                        <td><?php echo empty($row['NAME_EN']) ? 'N/A' : $row['NAME_EN'] ?></td>
                         <td class="text-center">
                         <?php
-                        if ($user['STATUS'] == 1){
+                        if ($row['STATUS'] == 1){
                             ?>
                             <span class="badge bg-label-primary me-1">Active</span>
                             <?php
@@ -69,17 +64,20 @@ $title = "List User";
                         ?>
                         </td>
                         <td class="text-center">
-                                <a href="edit.php?id=<?php echo $user['USERID']; ?>">
+                                <a href="edit.php?id=<?php echo $row['ID']; ?>">
                                     <i class="bx bxs-edit"></i>
                                 </a>
                                 &nbsp;
-                                <a href="javascript:void(0);" class="btnDelete" data-id="<?php echo $user['USERID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                <a href="javascript:void(0);" class="btnDelete" data-id="<?php echo $row['ID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                 style="color:red;">
                                     <i class="bx bxs-trash"></i>
                                 </a>
                             </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php 
+                    $No++;
+                    endforeach; 
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -90,7 +88,7 @@ $title = "List User";
 $(document).ready(function () {
     $('.btnDelete').on('click', function () {
         var deleteId = $(this).data('id');
-        var deleteUrl = '<?php echo BASE_URL ?>controllers/UserController.php?delet_id=' + deleteId;
+        var deleteUrl = '<?php echo BASE_URL ?>controllers/UserTypeController.php?delet_id=' + deleteId;
         $('#confirmDelete').attr('href', deleteUrl);
     });
 });

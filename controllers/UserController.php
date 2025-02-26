@@ -32,13 +32,26 @@ class UserController {
                 u.USERNAME,
                 u.EMAIL,
                 u.USERTYPEID,
-                ut.USERTYPENAME,
+                ut.NAME_EN,
                 u.STATUS
             FROM 
                 User_Tbl u
             JOIN 
-                UserType_Tbl ut ON u.USERTYPEID = ut.USERTYPEID
+                User_Type_Tbl ut ON u.USERTYPEID = ut.id
         ";
+        // $query = "
+        //     SELECT 
+        //         u.USERID,
+        //         u.USERNAME,
+        //         u.EMAIL,
+        //         u.USERTYPEID,
+        //         ut.NAME_EN,
+        //         u.STATUS
+        //     FROM 
+        //         User_Tbl u
+        //     JOIN 
+        //         user_type_tbl ut ON u.id = ut.id
+        // ";
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
 
@@ -103,12 +116,12 @@ class UserController {
                 u.EMAIL,
                 u.PASSWORD,
                 u.USERTYPEID,
-                ut.USERTYPENAME,
+                ut.NAME_EN,
                 u.STATUS
             FROM 
                 User_Tbl u
             JOIN
-                UserType_Tbl ut ON u.USERTYPEID = ut.USERTYPEID
+                User_Type_Tbl ut ON u.USERTYPEID = ut.ID
             WHERE
                 u.USERID = :userid
         ";

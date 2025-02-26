@@ -66,11 +66,11 @@
             <ul class="menu-sub">
                 <li class="menu-item">
                     <a href="<?php echo BASE_URL . $Admin_Url ?>user/index.php" class="menu-link">
-                        <div data-i18n="Without menu">User</div>
+                        <div data-i18n="Without menu">Users</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="<?php echo BASE_URL . $Admin_Url ?>sub_category/index.php" class="menu-link">
+                    <a href="<?php echo BASE_URL . $Admin_Url ?>user_type/index.php" class="menu-link">
                         <div data-i18n="Without navbar">User Types</div>
                     </a>
                 </li>

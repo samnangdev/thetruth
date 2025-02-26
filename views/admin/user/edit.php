@@ -73,12 +73,12 @@ $user = $UserController->editUser($id);
                                 <select name="TxtUserTypeID" class="form-select">
                                     <?php
                                     $UserTypeController = new UserTypeController();
-                                    $usertypes = $UserTypeController->listUserType();
+                                    $usertypes = $UserTypeController->list();
                                     foreach ($usertypes as $usertype):
-                                        $selected = ($usertype['USERTYPEID'] == $user['USERTYPEID']) ? 'selected' : '';
+                                        $selected = ($usertype['ID'] == $user['USERTYPEID']) ? 'selected' : '';
                                     ?>
-                                        <option value="<?php echo $usertype['USERTYPEID']; ?>" <?php echo $selected; ?>>
-                                            <?php echo $usertype['USERTYPENAME']; ?>
+                                        <option value="<?php echo $usertype['ID']; ?>" <?php echo $selected; ?>>
+                                            <?php echo $usertype['NAME_EN']; ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>

@@ -67,11 +67,11 @@ $title = "Create User";
                                             </option>
                                             <?php 
                                                 $UserTypeController = new UserTypeController();
-                                                $usertypes = $UserTypeController->listUserType();
+                                                $usertypes = $UserTypeController->list();
                                                 foreach ($usertypes as $usertype):
                                             ?> 
-                                                <option value="<?php echo $usertype['USERTYPEID']; ?>">
-                                                    <?php echo $usertype['USERTYPENAME']; ?>
+                                                <option value="<?php echo $usertype['ID']; ?>">
+                                                    <?php echo $usertype['NAME_EN']; ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
