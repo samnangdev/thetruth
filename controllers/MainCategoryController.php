@@ -9,23 +9,23 @@ if (isset($_POST['btnSave'])) {
     if (!empty($id)) {
         $MainCategoryController->update();
     } else {
-        $MainCategoryController->createMainCategory();
+        $MainCategoryController->create();
     }
 }
 
 if (isset($_GET['delet_id'])) {
     $id = $_GET['delet_id'];                                                                                        
     $MainCategoryController = new MainCategoryController();
-    $MainCategoryController->deleteMainCategory($id);
+    $MainCategoryController->delete($id);
 }
 
 class MainCategoryController {
-    public function listMainCategory() {
+    public function list() {
         global $conn;  // Use the global connection variable
 
         // Query to fetch users
         $query = "
-            SELECT * FROM main_category_tbl WHERE Status = 1";
+            SELECT * FROM main_category_tbl";
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
 
@@ -40,7 +40,7 @@ class MainCategoryController {
 
         return $rows;
     }
-    public function createMainCategory() {
+    public function create() {
         global $conn;
         $name = $_POST['TxtName'];
         $status = $_POST['TxtStatus'];
@@ -128,7 +128,7 @@ class MainCategoryController {
     
         oci_free_statement($stid);
     }
-    public function editMainCategory($id) {
+    public function edit($id) {
         
         global $conn;
         $query = "
@@ -147,7 +147,7 @@ class MainCategoryController {
     
         return $rows;
     }
-    public function deleteMainCategory($id) {
+    public function delete($id) {
         global $conn; // Use global database connection
     
         // Prepare update query to set STATUS = 0

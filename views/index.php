@@ -22,17 +22,17 @@
             <div class="col-md-10 col-lg-8">
                 <div class="p-b-20">
                     <!-- New -->
-                    <?php include 'components/new.php'; ?>
-
-                    <!-- National -->
                     <?php include 'components/national.php'; ?>
 
+                    <!-- National -->
+                    <?php include 'components/international.php'; ?>
+
                     <!-- Entertain -->
-                    <?php include 'components/entertainment.php'; ?>
+                    <?php include 'components/technology.php'; ?>
 
                     <!-- Ads -->
                     <div class="tab01 p-b-20">
-                        <img class="max-w-full" src="client/images/ads/Ads_3.png">
+                        <img class="max-w-full" src="<?php echo BASE_URL ?>public/client/images/ads/Ads_3.png">
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <!--  -->
                     <div class="flex-c-s p-t-8">
                         <a href="#">
-                            <img class="max-w-full" src="client/images/ads/Ads_1.gif" alt="IMG">
+                            <img class="max-w-full" src="<?php echo BASE_URL ?>public/client/images/ads/Ads_1.gif" alt="IMG">
                         </a>
                     </div>
                 </div>
@@ -59,7 +59,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <!-- Technology -->
-            <?php include 'components/technology.php'; ?>
+            <?php include 'components/entertainment.php'; ?>
             <!-- Feature video -->
             <?php include 'components/feature_video.php'; ?>
         </div>

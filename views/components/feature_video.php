@@ -10,7 +10,7 @@
 
             <div>
                 <div class="wrap-pic-w pos-relative">
-                    <img src="{{ asset('client/images/video-01.jpg') }}" alt="IMG">
+                    <img src="<?php echo BASE_URL ?>public/client/images/video-01.jpg" alt="IMG">
 
                     <button class="s-full ab-t-l flex-c-c fs-32 cl0 hov-cl10 trans-03"
                         data-toggle="modal" data-target="#modal-video-01">
@@ -43,11 +43,11 @@
         </div>
         <!-- Tag -->
         <div class="p-b-55">
-            <img class="max-w-full" src="{{ asset('client/images/ads/Ads_4.png') }}">
+            <img class="max-w-full" src="<?php echo BASE_URL ?>public/client/images/ads/Ads_4.png">
         </div>
         <!-- Tag -->
         <div class="p-b-55">
-            <img class="max-w-full" src="{{ asset('client/images/ads/Ads_2.jpg') }}">
+            <img class="max-w-full" src="<?php echo BASE_URL ?>public/client/images/ads/Ads_2.jpg">
         </div>
     </div>
 </div>

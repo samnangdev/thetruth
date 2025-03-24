@@ -1,3 +1,6 @@
+<?php
+require_once  '../controllers/HomeController.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,18 +35,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Moulpali&family=Siemreap&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Siemreap&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Koulen&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@100;300;400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* p{
-            font-family: "Siemreap", "Khmer OS", sans-serif;
-            font-weight: 400;
-            font-style: normal;
+        .koulen {
+            font-family: 'Koulen', 'Alegreya Sans', sans-serif !important;
         }
-  .menu-desktop .add-font{
-   font-family: "Siemreap", "Khmer OS", sans-serif;
-   font-weight: 400;
-            font-style: normal;
-  } */
+        .btb{
+            font-family: 'Battambang', 'Alegreya Sans', sans-serif !important;
+        }
+        .sr {
+        font-family: 'Siemreap', 'Alegreya Sans', sans-serif !important;
+        }
     </style>
 </head>
 
@@ -257,7 +261,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- Menu Desktop -->
             <div class="wrap-main-nav">
                 <div class="main-nav">
@@ -266,64 +269,100 @@
                         <a class="logo-stick" href="index.html">
                             <img src="<?php echo BASE_URL; ?>public/client/images/logo_1.png" alt="LOGO">
                         </a>
-                        <ul class="main-menu">
-                            <style>
-                                .add-font {
-                                    font-family: "Siemreap", "Khmer OS", sans-serif !important;
-                                    font-weight: 400 !important;
-                                    font-style: normal !important;
-                                }
-                            </style>
-                            <li class="main-menu-active add-font">
+                        <ul class="main-menu"  >
+                            <li class="main-menu-active">
+                            <a href="index.html" class="koulen">ទំព័រដើម</a>
+
+                            </li>
+                            <?php
+                            $HomeController = new HomeController();
+                            $categories = $HomeController->listCategory();
+
+                            foreach ($categories as $mainCategory => $subCategories):
+                                $hasSubcategories = !empty($subCategories); // Check if there are subcategories
+                            ?>
+                                <li class="<?= $hasSubcategories ? 'dropdown' : '' ?>">
+                                    <a href="<?php ?>" <?= $hasSubcategories ? 'class="koulen dropdown-toggle"' : 'class="koulen"' ?>>
+                                        <?php echo $mainCategory; ?>
+                                    </a>
+                                    <?php if ($hasSubcategories): ?>
+                                        <ul class="sub-menu">
+                                            <?php foreach ($subCategories as $subCategory): ?>
+                                                <li><a href="#" class="koulen"><?php echo $subCategory; ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+
+                        <!-- <ul class="main-menu">
+                            <li class="main-menu-active">
                                 <a href="index.html">ទំព័រដើម</a>
                             </li>
-                            <li class="main-menu add-font">
-                                <a href="index.html">ព័ត៌មានថ្មីៗ</a>
-                            </li>
+                            <?php
+                            $HomeController = new HomeController();
+                            $categories = $HomeController->listCategory();
 
+                            foreach ($categories as $mainCategory => $subCategories):
+                            ?>
+                                <li>
+                                    <a href="#" class="dropdown-toggle"><?php echo $mainCategory; ?></a>
+                                    <?php if (!empty($subCategories)): ?>
+                                        <ul class="sub-menu">
+                                            <?php foreach ($subCategories as $subCategory): ?>
+                                                <li><a href="#"><?php echo $subCategory; ?></a></li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul> -->
 
+                        <!-- <ul class="main-menu">
+                            <li class="main-menu-active add-font">
+                                <a href="index.html">Home</a>
+                            </li>
                             <li>
-                                <a href="#" class=" dropdown-toggle">ព័ត៌មានជាតិ</a>
+                                <a href="#" class=" dropdown-toggle">National</a>
                                 <ul class="sub-menu">
-                                    <li><a href="category-01.html">នយោបាយ</a></li>
-                                    <li><a href="category-02.html">បទយកការណ៍/សម្ភាស</a></li>
+                                    <li><a href="category-01.html">Politics</a></li>
+                                    <li><a href="category-02.html">Report/Interview</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="#">អន្តរជាតិ</a>
+                                <a href="#">International</a>
                             </li>
                             <li>
-                                <a href="#" class="dropdown-toggle">សេដ្ឋកិច្ច</a>
+                                <a href="#" class="dropdown-toggle">Economy</a>
                                 <ul class="sub-menu">
-                                    <li><a href="category-01.html">ហិរញ្ញវត្ថុ</a></li>
-                                    <li><a href="category-02.html">អចលនទ្រព្យ</a></li>
-                                    <li><a href="blog-grid.html">គំនិតច្នៃប្រឌិត</a></li>
-                                    <li><a href="blog-list-01.html">របាយការណ៍ពិសេស</a></li>
+                                    <li><a href="category-01.html">Financial</a></li>
+                                    <li><a href="category-02.html">Real Estate</a></li>
+                                    <li><a href="blog-grid.html">Creativity</a></li>
+                                    <li><a href="blog-list-01.html">Special Report</a></li>
                                 </ul>
                             </li>
                             <li>
-                                <a href="#">ទំនាកទំនង</a>
+                                <a href="#">Relations</a>
                             </li>
                             <li>
-                                <a href="#">បច្ចេកវិទ្យា</a>
+                                <a href="#">Business</a>
                             </li>
                             <li>
-                                <a href="#">កីឡា</a>
+                                <a href="#">Technology</a>
                             </li>
                             <li>
-                                <a href="#" class="dropdown-toggle">ការកម្សាន្ត</a>
+                                <a href="#">Sports</a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-toggle">Entertainment</a>
                                 <ul class="sub-menu">
-                                    <li><a href="category-01.html">ទេសចរណ៍</a></li>
-                                    <li><a href="category-02.html">សិល្បៈវប្បធម៌</a></li>
-                                    <li><a href="blog-grid.html">ម្ហូបអាហារ</a></li>
+                                    <li><a href="category-01.html">Tourism</a></li>
+                                    <li><a href="category-02.html">Arts & Culture</a></li>
+                                    <li><a href="blog-grid.html">Food</a></li>
                                 </ul>
                             </li>
-                            <!-- <li>
-        <a href="?lang=en" style="color: black" class="d-flex align-items-center">
-         <img  width="40px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1920px-Flag_of_the_United_Kingdom_%283-5%29.svg.png" alt="English Flag">
-         </a>
-       </li> -->
-                        </ul>
+                        </ul> -->
                     </nav>
                 </div>
             </div>
@@ -346,10 +385,8 @@
                         </div>
 
                         <div>
-                            <p class="f1-s-1 cl1000 p-b-16">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur tempor magna eget
-                                elit efficitur, at accumsan sem placerat. Nulla tellus libero, mattis nec molestie at,
-                                facilisis ut turpis. Vestibulum dolor metus, tincidunt eget odio
+                            <p class="f1-s-1 cl1000 p-b-16 text-justify">
+                            Fact News ​មិនមែន​ធ្វើការ​លើ​សារ​ព័ត៌មាន​ ​និង​បម្រើ​មនោគម​ន៍​វិជ្ជា​ណាមួយ​ឡើយ​។​ Fact News ​គឺជា​ក្រុម​ដែល​ធ្វើ​កិច្ច​វិភាគ​លើ​ព្រឹត្តិការណ៍​ពិភពលោក​ ​និង​ជា​ថង់​ប្រាជ្ញា​សម្រាប់​សាធារណៈ​ជន​ដកស្រង់​ចំណេះ​ដឹង​និង​តាមដាន​ព្រឹត្តិ​កា​ណ៍​ពិភពលោក​។​ ​រាល់​ស្នាដៃ​វិភាគ​ ​និង​ការ​ចែករំលែក​ចំណេះ​ដឹង​ទាំងឡាយ​ ​គឺ​ក្រុម​ការងារ​ធ្វើឡើង​ដោយ​ជំនាញ​ ​ដោយ​ផ្អែកលើ​អំណះអំណាង​ច្បាស់លាស់​។
                             </p>
 
                             <p class="f1-s-1 cl1000 p-b-16">
@@ -389,35 +426,35 @@
                         <ul class="m-t--12">
                             <li class="how-bor1 p-rl-5 p-tb-10">
                                 <a href="#"
-                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8"style="color:rgb(122, 122, 122)">
+                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8" style="color:rgb(122, 122, 122)">
                                     Fashion (22)
                                 </a>
                             </li>
 
                             <li class="how-bor1 p-rl-5 p-tb-10">
                                 <a href="#"
-                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8"style="color:rgb(122, 122, 122)">
+                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8" style="color:rgb(122, 122, 122)">
                                     Technology (29)
                                 </a>
                             </li>
 
                             <li class="how-bor1 p-rl-5 p-tb-10">
                                 <a href="#"
-                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8"style="color:rgb(122, 122, 122)">
+                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8" style="color:rgb(122, 122, 122)">
                                     Street Style (15)
                                 </a>
                             </li>
 
                             <li class="how-bor1 p-rl-5 p-tb-10">
                                 <a href="#"
-                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8"style="color:rgb(122, 122, 122)">
+                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8" style="color:rgb(122, 122, 122)">
                                     Life Style (28)
                                 </a>
                             </li>
 
                             <li class="how-bor1 p-rl-5 p-tb-10">
                                 <a href="#"
-                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8"style="color:rgb(122, 122, 122)">
+                                    class="f1-s-5 hov-cl10 trans-03 p-tb-8" style="color:rgb(122, 122, 122)">
                                     DIY & Crafts (16)
                                 </a>
                             </li>
@@ -535,7 +572,7 @@
     <!--===============================================================================================-->
     <script src="<?php echo BASE_URL; ?>public/client/js/main.js"></script>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

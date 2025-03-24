@@ -46,7 +46,6 @@ class SubCategoryController {
     
         return $rows;
     }
-    
     public function create() {
         global $conn;
         $name = $_POST['TxtName'];

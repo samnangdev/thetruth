@@ -8,7 +8,7 @@ $title = "Edit Main Category";
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 
 $MainCategoryController = new MainCategoryController();
-$row = $MainCategoryController->editMainCategory($id);
+$row = $MainCategoryController->edit($id);
 ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="fw-bold mb-0">Edit User</h4>

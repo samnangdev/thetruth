@@ -22,6 +22,9 @@ $title = "List User";
                 <thead class="table-secondary text-center">
                     <tr>
                         <th>
+                            No
+                        </th>
+                        <th>
                             ID
                         </th>
                         <th>
@@ -48,8 +51,10 @@ $title = "List User";
                     <?php 
                     $UserController = new UserController();
                     $users = $UserController->listUser();
+                    $No = 1;
                     foreach ($users as $user): ?>
                     <tr>
+                        <td><?php echo $No; ?></td>
                         <td><?php echo $user['USERID']; ?></td>
                         <td><?php echo $user['USERNAME']; ?></td>
                         <td><?php echo $user['EMAIL']; ?></td>
@@ -79,7 +84,7 @@ $title = "List User";
                                 </a>
                             </td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php $No++; endforeach; ?>
                 </tbody>
             </table>
         </div>

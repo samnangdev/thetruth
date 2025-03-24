@@ -45,8 +45,8 @@ $title = "List Tag";
                     <?php 
                     $TagController = new TagController();
                     $rows = $TagController->list();
-                    foreach ($rows as $row): 
                     $No = 1;
+                    foreach ($rows as $row): 
                     ?>
                     <tr>
                         <td><?php echo $No ?></td>

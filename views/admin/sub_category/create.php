@@ -37,7 +37,7 @@ $title = "Create Sub Catagory";
                                             </option>
                                             <?php 
                                                 $MainCategoryController = new MainCategoryController();
-                                                $rows = $MainCategoryController->listMainCategory();
+                                                $rows = $MainCategoryController->list();
                                                 foreach ($rows as $row):
                                             ?> 
                                                 <option value="<?php echo $row['ID']; ?>">

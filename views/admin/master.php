@@ -225,6 +225,10 @@ $_SESSION['lang'] = $lang;
 
     <script src="<?php echo BASE_URL; ?>public/admin/assets/js/snackbar.js"></script>
 
+    <!-- Text editor -->
+    <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.min.js"></script>
+    <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.js"></script>
+
     <!-- Page JS -->
     <script src="<?php echo BASE_URL; ?>public/admin/assets/js/dashboards-analytics.js"></script>
 

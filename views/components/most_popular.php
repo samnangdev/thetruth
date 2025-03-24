@@ -1,6 +1,6 @@
 <div>
     <div class="how2 how2-cl1 flex-s-c" style="background-color: #ffffff;">
-        <h3 class="f1-m-2 cl12 tab01-title">
+        <h3 class="f1-m-2 koulen cl12 tab01-title">
             ពេញនិយមបំផុត
         </h3>
     </div>

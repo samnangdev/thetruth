@@ -51,8 +51,8 @@ $title = "List Sub Category";
                     <?php 
                     $SubCategoryController = new SubCategoryController();
                     $rows = $SubCategoryController->list();
-                    foreach ($rows as $row): 
                     $No = 1;
+                    foreach ($rows as $row): 
                     ?>
                     <tr>
                         <td><?php echo $No ?></td>
@@ -60,7 +60,7 @@ $title = "List Sub Category";
                         <td><?php echo $row['NAME']; ?></td>
                         <td><?php echo empty($row['DESCRIPTION']) ? 'N/A' : $row['DESCRIPTION']; ?></td>
                         <td><?php echo $row['SLUG']; ?></td>
-                        <td><?php echo $row['MAIN_CATEGORY_NAME']; ?></td>
+                        <td><?php echo empty($row['MAIN_CATEGORY_NAME']) ? 'N/A' : $row['MAIN_CATEGORY_NAME']; ?></td>
                         <td class="text-center">
                         <?php
                         if ($row['STATUS'] == 1){

@@ -39,7 +39,7 @@ $row = $SubCategoryController->edit($id);
                                 <select name="TxtMainCategoryID" class="form-select">
                                     <?php
                                     $MainCategoryController = new MainCategoryController();
-                                    $rows_main = $MainCategoryController->listMainCategory();
+                                    $rows_main = $MainCategoryController->list();
                                     foreach ($rows_main as $row_main):
                                         $selected = ($row_main['ID'] == $row['MAIN_CATEGORY_ID']) ? 'selected' : '';
                                     ?>

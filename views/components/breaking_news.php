@@ -1,9 +1,9 @@
 <!-- Breaking News -->
 <div class="container">
-    <div class="bg0 flex-wr-sb-c p-rl-20 p-tb-8 bg7">
+    <div class=" flex-wr-sb-c p-rl-20 p-tb-8 " >
         <div class="f2-s-1 p-r-30 size-w-0 m-tb-6 flex-wr-s-c">
-            <span class="text-uppercase text-danger cl2 p-r-8">
-                Breaking News:
+            <span style="font-weight: bold;" class="text-uppercase btb text-danger cl2 p-r-8">
+            ព័ត៌មាន ថ្មីៗ
             </span>
 
             <span class="dis-inline-block cl6 slide100-txt pos-relative size-w-0" data-in="fadeInDown"

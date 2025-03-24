@@ -26,7 +26,7 @@ class UserTypeController {
     public function list() {
         global $conn;  
 
-        $query = "SELECT * FROM user_type_tbl WHERE status = 1";
+        $query = "SELECT * FROM user_type_tbl WHERE status = 1 ORDER BY ID ASC";
     
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
