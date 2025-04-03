@@ -31,49 +31,17 @@ $title = "Create Article";
                                     </option>
                                     <?php
                                     $MainCategoryController = new MainCategoryController();
-                                    $rows = $MainCategoryController->list();
+                                    $rows = $MainCategoryController->listForSelect();
                                     foreach ($rows as $row):
                                     ?>
                                         <option value="<?php echo $row['ID']; ?>">
-                                            <?php echo $row['NAME']; ?>
+                                            <?php echo $row['NAME_KH']; ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="defaultSelect" class="form-label">Sub Category</label>
-                                <select name="TxtSubCategoryID" class="form-select">
-                                    <option select hidden>
-                                        --------------------------------------------------------------------------------------------------------------------------------------------------
-                                    </option>
-                                    <?php
-                                    $SubCategoryController = new SubCategoryController();
-                                    $rows = $SubCategoryController->list();
-                                    foreach ($rows as $row):
-                                    ?>
-                                        <option value="<?php echo $row['ID']; ?>">
-                                            <?php echo $row['NAME']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="defaultSelect" class="form-label">Status</label>
-                                <select name="TxtStatus" class="form-select">
-                                    <option select hidden>
-                                        --------------------------------------------------------------------------------------------------------------------------------------------------
-                                    </option>
-                                    <option value="Published">Published</option>
-                                    <option value="Draft">Draft</option>
-                                    <option value="Archived">Archived</option>
-                                        
-                                </select>
-                            </div>
-                        </div>
+                        
                         <div class="col-sm-4">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Title</label>
@@ -81,16 +49,13 @@ $title = "Create Article";
                                     value="" placeholder="Example" />
                             </div>
                         </div>
-                        <?php
-                        $current_date = date("Y-m-d");
-                        ?>
-                        <input type="hidden" name="TxtPublishedDate" class="form-control"
-                        value="<?php echo $current_date ?>"/>
                         <div class="col-sm-4">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Author</label>
-                                <input type="text" name="TxtAuthorID" class="form-control"
-                                    value="" placeholder="Example" />
+                                <input disabled type="text" value="<?php echo $_SESSION['username'] ?>" name="" class="form-control"
+                                     placeholder="Example" />
+                                <input type="hidden" value="<?php echo $_SESSION['user_id'] ?>" name="TxtAuthorID" class="form-control"
+                                     placeholder="Example" />
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -100,6 +65,41 @@ $title = "Create Article";
                                     value="" placeholder="Example" />
                             </div>
                         </div>
+                        <?php
+                        $current_date = date("Y-m-d");
+                        ?>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="defaultSelect" class="form-label">Status</label>
+                                <select name="TxtStatus" class="form-select">
+                                    <!-- <option select hidden>
+                                        --------------------------------------------------------------------------------------------------------------------------------------------------
+                                    </option> -->
+                                    <option selected value="Published">Published</option>
+                                    <option value="Draft">Draft</option>
+                                    <option value="Archived">Archived</option>
+                                    <option value="Slide">Slide</option>
+                                        
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Published Date</label>
+                                <input disabled type="date" name="TxtPublishedDate" class="form-control"
+                                    value="<?php echo $current_date ?>" placeholder="Example" />
+                            </div>
+                        </div>
+                        <!-- <input type="hidden" name="TxtPublishedDate" class="form-control"
+                        value="<?php echo $current_date ?>"/> -->
+                        <!-- <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Author</label>
+                                <input type="text" name="TxtAuthorID" class="form-control"
+                                    value="" placeholder="Example" />
+                            </div>
+                        </div> -->
+                        
                         <div class="col-sm-12">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Contents</label>
@@ -142,3 +142,22 @@ $title = "Create Article";
 $content = ob_get_clean();
 include BASE_PATH . 'views/admin/master.php';
 ?>
+<!-- <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="defaultSelect" class="form-label">Sub Category</label>
+                                <select name="TxtSubCategoryID" class="form-select">
+                                    <option select hidden>
+                                        --------------------------------------------------------------------------------------------------------------------------------------------------
+                                    </option>
+                                    <?php
+                                    $SubCategoryController = new SubCategoryController();
+                                    $rows = $SubCategoryController->list();
+                                    foreach ($rows as $row):
+                                    ?>
+                                        <option value="<?php echo $row['ID']; ?>">
+                                            <?php echo $row['NAME']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div> -->

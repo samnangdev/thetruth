@@ -11,9 +11,15 @@ $title = "List Main Category";
 ?>
 <h4 class="fw-bold mb-2 d-flex justify-content-between align-items-center">
     List Main Category
-    <a href="create.php" style="font-size:30px;" class="text-primary">
+    <?php
+    if ($_SESSION['user_type_name'] !== 'Author') :
+    ?>
+    <a href="create.php" style="font-size:30px;" class="text-primary ">
         <i class="bi bi-plus-square-fill"></i>
     </a>
+    <?php
+    endif;
+    ?>
 </h4>
 <div class="card">
     <div class="card-body">
@@ -28,7 +34,10 @@ $title = "List Main Category";
                             ID
                         </th>
                         <th>
-                            Name
+                            NameKH
+                        </th>
+                        <th>
+                            NameEN
                         </th>
                         <th>
                             Desc
@@ -54,9 +63,10 @@ $title = "List Main Category";
                     <tr>
                         <td><?php echo $No ?></td>
                         <td><?php echo $row['ID']; ?></td>
-                        <td><?php echo $row['NAME']; ?></td>
+                        <td><?php echo $row['NAME_KH']; ?></td>
+                        <td><?php echo empty($row['NAME_EN']) ? 'N/A' : $row['NAME_EN']; ?></td>
                         <td><?php echo empty($row['DESCRIPTION']) ? 'N/A' : $row['DESCRIPTION']; ?></td>
-                        <td><?php echo $row['SLUG']; ?></td>
+                        <td><?php echo empty($row['SLUG']) ? 'N/A' : $row['SLUG'];  ?></td>
                         <!-- <td> -->
                             <!-- <div class="d-flex justify-content-center">
                                 <div class="form-check form-switch">
@@ -67,7 +77,7 @@ $title = "List Main Category";
                                 <div class="d-flex justify-content-center">
                                     <div class="form-check form-switch">
                                         <input 
-                                            class="form-check-input toggle-status" 
+                                            class="form-check-input toggle-status <?php echo ($_SESSION['user_type_name'] === 'Author') ? 'disabled-link' : ''; ?>" 
                                             type="checkbox" 
                                             role="switch" 
                                             id="flexSwitchCheckChecked_<?php echo $row['ID']; ?>"
@@ -79,11 +89,11 @@ $title = "List Main Category";
                             </td>
                         <!-- </td> -->
                         <td class="text-center">
-                                <a href="edit.php?id=<?php echo $row['ID']; ?>">
+                                <a class="<?php echo ($_SESSION['user_type_name'] === 'Author') ? 'disabled-link' : ''; ?>" href="edit.php?id=<?php echo $row['ID']; ?>">
                                     <i class="bx bxs-edit"></i>
                                 </a>
                                 &nbsp;
-                                <a href="javascript:void(0);" class="btnDelete" data-id="<?php echo $row['ID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                <a href="javascript:void(0);" class="btnDelete <?php echo ($_SESSION['user_type_name'] === 'Author') ? 'disabled-link' : ''; ?>" data-id="<?php echo $row['ID']; ?>" name="btnDelete" data-bs-toggle="modal" data-bs-target="#deleteModal"
                                 style="color:red;">
                                     <i class="bx bxs-trash"></i>
                                 </a>
@@ -116,7 +126,7 @@ document.addEventListener("DOMContentLoaded", function () {
 $(document).ready(function () {
     $('.btnDelete').on('click', function () {
         var deleteId = $(this).data('id');
-        var deleteUrl = '<?php echo BASE_URL ?>controllers/MainCategoryController.php?delet_id=' + deleteId;
+        var deleteUrl = '<?php echo BASE_URL ?>controllers/MainCategoryController.php?delete_id=' + deleteId;
         $('#confirmDelete').attr('href', deleteUrl);
     });
 });

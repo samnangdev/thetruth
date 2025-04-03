@@ -28,9 +28,16 @@ $row = $SubCategoryController->edit($id);
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="mb-3">
-                                <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                <input type="text" name="TxtName" class="form-control"
-                                    value="<?php echo isset($row['NAME']) ? $row['NAME'] : ''; ?>" placeholder="Example" />
+                                <label for="exampleFormControlInput1" class="form-label">NameKH</label>
+                                <input type="text" name="TxtNameKH" class="form-control"
+                                    value="<?php echo isset($row['NAME_KH']) ? $row['NAME_KH'] : ''; ?>" placeholder="Example" />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">NameEN</label>
+                                <input type="text" name="TxtNameEN" class="form-control"
+                                    value="<?php echo isset($row['NAME_EN']) ? $row['NAME_EN'] : ''; ?>" placeholder="Example" />
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -39,21 +46,15 @@ $row = $SubCategoryController->edit($id);
                                 <select name="TxtMainCategoryID" class="form-select">
                                     <?php
                                     $MainCategoryController = new MainCategoryController();
-                                    $rows_main = $MainCategoryController->list();
+                                    $rows_main = $MainCategoryController->listForSelect();
                                     foreach ($rows_main as $row_main):
                                         $selected = ($row_main['ID'] == $row['MAIN_CATEGORY_ID']) ? 'selected' : '';
                                     ?>
                                         <option value="<?php echo $row_main['ID']; ?>" <?php echo $selected; ?>>
-                                            <?php echo $row_main['NAME']; ?>
+                                            <?php echo $row_main['NAME_KH']; ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="4"><?php echo $row['DESCRIPTION']; ?></textarea>
                             </div>
                         </div>
                         <div class="col-sm-6">
@@ -67,6 +68,12 @@ $row = $SubCategoryController->edit($id);
                                         Inactive
                                     </option>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="4"><?php echo $row['DESCRIPTION']; ?></textarea>
                             </div>
                         </div>
                     </div>

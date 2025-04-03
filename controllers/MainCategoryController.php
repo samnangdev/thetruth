@@ -13,13 +13,40 @@ if (isset($_POST['btnSave'])) {
     }
 }
 
-if (isset($_GET['delet_id'])) {
-    $id = $_GET['delet_id'];                                                                                        
+if (isset($_GET['delete_id'])) {
+    $id = $_GET['delete_id'];                                                                                        
     $MainCategoryController = new MainCategoryController();
     $MainCategoryController->delete($id);
 }
 
+if (isset($_GET['update_id']) && isset($_GET['status'])) {
+    $id = $_GET['update_id'];  
+    $status = $_GET['status'];  
+    $MainCategoryController = new MainCategoryController();
+    $MainCategoryController->status($id, $status);
+}
+
 class MainCategoryController {
+    public function listForSelect() {
+        global $conn;  // Use the global connection variable
+
+        // Query to fetch users
+        $query = "
+            SELECT * FROM main_category_tbl WHERE status = 1";
+        $stid = oci_parse($conn, $query);
+        oci_execute($stid);
+
+        // Store results in the $users array
+        $rows = [];
+        while ($row = oci_fetch_assoc($stid)) {
+            $rows[] = $row;
+        }
+
+        // Free the statement
+        oci_free_statement($stid);
+
+        return $rows;
+    }
     public function list() {
         global $conn;  // Use the global connection variable
 
@@ -42,7 +69,8 @@ class MainCategoryController {
     }
     public function create() {
         global $conn;
-        $name = $_POST['TxtName'];
+        $name_kh = $_POST['TxtNameKH'];
+        $name_en = $_POST['TxtNameEN'];
         $status = $_POST['TxtStatus'];
         $desc = $_POST['TxtDesc'];
     
@@ -52,14 +80,15 @@ class MainCategoryController {
         $slug = trim($slug, '_');             // Remove trailing "_"
     
         // Prepare SQL query (no quotes around column names)
-        $sql = "INSERT INTO main_category_tbl (name, slug, description, status) 
-                VALUES (:name, :slug, :description, :status)";
+        $sql = "INSERT INTO main_category_tbl (name_kh, name_en, slug, description, status) 
+                VALUES (:name_kh, :name_en, :slug, :description, :status)";
         
         // Parse the SQL query
         $stid = oci_parse($conn, $sql);
         
         // Bind parameters
-        oci_bind_by_name($stid, ":name", $name);
+        oci_bind_by_name($stid, ":name_kh", $name_kh);
+        oci_bind_by_name($stid, ":name_en", $name_en);
         oci_bind_by_name($stid, ":slug", $slug);
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
@@ -87,18 +116,20 @@ class MainCategoryController {
     
         // Retrieve form data
         $id = $_POST['id'];  // Hidden input field from the form
-        $name = $_POST['TxtName'];
+        $name_kh = $_POST['TxtNameKH'];
+        $name_en = $_POST['TxtNameEN'];
         $desc = $_POST['TxtDesc'];
         $status = $_POST['TxtStatus'];
 
         // Generate Slug
-        $slug = strtolower($name);           // Convert to lowercase
+        $slug = strtolower($name_en);           // Convert to lowercase
         $slug = preg_replace('/[^a-z0-9]+/i', '_', $slug); // Replace spaces & special chars with "_"
         $slug = trim($slug, '_');             // Remove trailing "_"
     
         // Prepare SQL update query
         $sql = "UPDATE Main_Category_Tbl 
-                SET name = :name, 
+                SET name_kh = :name_kh, 
+                    name_en = :name_en, 
                     description = :description, 
                     status = :status,
                     slug = :slug
@@ -108,7 +139,8 @@ class MainCategoryController {
     
         // Bind parameters
         oci_bind_by_name($stid, ":id", $id);
-        oci_bind_by_name($stid, ":name", $name);
+        oci_bind_by_name($stid, ":name_kh", $name_kh);
+        oci_bind_by_name($stid, ":name_en", $name_en);
         oci_bind_by_name($stid, ":description", $desc);
         oci_bind_by_name($stid, ":status", $status);
         oci_bind_by_name($stid, ":slug", $slug);
@@ -151,7 +183,7 @@ class MainCategoryController {
         global $conn; // Use global database connection
     
         // Prepare update query to set STATUS = 0
-        $sql = "UPDATE Main_Category_Tbl SET STATUS = 0 WHERE id = :id";
+        $sql = "DELETE FROM Main_Category_Tbl WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":id", $id);
@@ -172,5 +204,37 @@ class MainCategoryController {
     
         oci_free_statement($stid);
     }
+    public function status($id, $status) {
+        global $conn; // Use global database connection
+    
+        // Ensure status is either 0 or 1
+        $status = ($status == 1) ? 1 : 0;
+    
+        // Prepare SQL update query
+        $sql = "UPDATE main_category_tbl SET status = :status WHERE id = :id";
+    
+        $stid = oci_parse($conn, $sql);
+        oci_bind_by_name($stid, ":status", $status);
+        oci_bind_by_name($stid, ":id", $id);
+    
+        // Execute the query
+        $result = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
+    
+        if ($result) {
+            oci_commit($conn); // Commit transaction
+            $_SESSION['snackbar'] = ['message' => 'Status updated successfully!', 'type' => 'success'];
+        } else {
+            $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
+            $e = oci_error($stid);
+            echo "Error updating record: " . $e['message'];
+        }
+    
+        oci_free_statement($stid);
+    
+        // Redirect back
+        header('Location: ' . BASE_URL . 'views/admin/main_category/index.php');
+        exit();
+    }
+    
     
 }

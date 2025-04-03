@@ -21,12 +21,24 @@ $title = "Create Main Catagory";
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                        <input type="text" name="TxtName" class="form-control"
+                                        <label for="exampleFormControlInput1" class="form-label">Name KH</label>
+                                        <input type="text" name="TxtNameKH" class="form-control"
                                             value="" placeholder="Example" />
                                     </div>
                                 </div>
-                                
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Name EN</label>
+                                        <input type="text" name="TxtNameEN" class="form-control"
+                                            value="" placeholder="Example" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                        <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+                                    </div>
+                                </div>
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="defaultSelect" class="form-label">Status</label>
@@ -37,12 +49,6 @@ $title = "Create Main Catagory";
                                             <option value="1" selected>Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                        <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
                                     </div>
                                 </div>
                             </div>

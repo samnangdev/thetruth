@@ -6,22 +6,22 @@ require_once BASE_PATH . 'config/config.php';
 require_once BASE_PATH . 'connection/db.php';
 
 if (session_status() == PHP_SESSION_NONE) {
-    session_start();
+  session_start();
 }
-// if (!isset($_SESSION['Username']) || $_SESSION['UserTypeID'] != 1) {
-//     header('location: ' . BASE_URL . 'index.php');
-// }
+if (!isset($_SESSION['username'])) {
+    header('location: ' . BASE_URL . 'views/auth/index.php');
+}
 
 // Set default language
 $lang_df = 'kh';
 
 // Check if language is set in the URL
 if (isset($_GET['lang'])) {
-    $lang_df = $_GET['lang'];
-    $_SESSION['lang_df'] = $lang_df; // Save language preference in session
+  $lang_df = $_GET['lang'];
+  $_SESSION['lang_df'] = $lang_df; // Save language preference in session
 } elseif (isset($_SESSION['lang_df'])) {
-    // Get language from session if set
-    $lang_df = $_SESSION['lang_df'];
+  // Get language from session if set
+  $lang_df = $_SESSION['lang_df'];
 }
 
 // Load the language file
@@ -32,12 +32,12 @@ $_SESSION['lang'] = $lang;
 <!DOCTYPE html>
 <!-- beautify ignore:start -->
 <html lang="<?php echo $lang; ?>" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="<?php echo BASE_URL; ?>public/admin/assets/" data-template="vertical-menu-template-free">
+
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-  />
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   <title><?php echo $title ?></title>
   <meta name="description" content="" />
   <!-- Favicon -->
@@ -47,8 +47,7 @@ $_SESSION['lang'] = $lang;
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=public/admin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-    rel="stylesheet"
-  />
+    rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;700&display=swap" rel="stylesheet" />
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/fonts/boxicons.css" />
@@ -63,13 +62,15 @@ $_SESSION['lang'] = $lang;
 
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/apex-charts/apex-charts.css" />
   <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/css/snackbar.css" />
-  
+
   <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/helpers.js"></script>
   <script src="<?php echo BASE_URL; ?>public/admin/assets/js/config.js"></script>
   <script src="<?php echo BASE_URL; ?>public/admin/libs/jquery/jquery.js"></script>
   <script src="<?php echo BASE_URL; ?>public/admin/assets/js/snackbar.js"></script>
   <script src="<?php echo BASE_URL; ?>public/admin/assets/js/dynamic-image.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="icon" type="image/png"
+    href="https://www.theseedcambodia.com/wp-content/uploads/2021/01/cropped-THE-SEED-300x300.png">
   <style>
     body {
       font-family: "Siemreap", sans-serif;
@@ -77,26 +78,35 @@ $_SESSION['lang'] = $lang;
       font-style: normal;
       /* font-size: 14px; */
     }
+
     th {
-      font-family: khmer, Arial,Helvetica, sans-serif;
+      font-family: khmer, Arial, Helvetica, sans-serif;
     }
-    .form-label{
+
+    .form-label {
       font-size: 15px;
     }
+
     :root {
       --bs-blue: #0d6efd;
-      --bs-primary:#0d6efd; /* Primary color set to Bootstrap blue */
-      --bs-primary-rgb: 0, 123, 255; /* RGB values for primary color */
-      --bs-text-opacity: 1; /* Default text opacity */
+      --bs-primary: #0d6efd;
+      /* Primary color set to Bootstrap blue */
+      --bs-primary-rgb: 0, 123, 255;
+      /* RGB values for primary color */
+      --bs-text-opacity: 1;
+      /* Default text opacity */
     }
+
     .text-primary {
       --bs-text-opacity: 1;
       color: rgba(var(--bs-primary-rgb), var(--bs-text-opacity)) !important;
     }
+
     .table-secondary th {
-  text-transform: none !important;
-  }
-  .signature-container {
+      text-transform: none !important;
+    }
+
+    .signature-container {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -118,119 +128,136 @@ $_SESSION['lang'] = $lang;
     .right-signature {
       text-align: right;
     }
+
     .form-label,
-.col-form-label {
-  font-size: 0.90rem;
-  /* text-transform: uppercase; */
-  text-transform: none !important;
-  letter-spacing: inherit;
-}
+    .col-form-label {
+      font-size: 0.90rem;
+      /* text-transform: uppercase; */
+      text-transform: none !important;
+      letter-spacing: inherit;
+    }
   </style>
+   <style>
+                                /* Disable clicks on links */
+                                .disabled-link {
+                                    pointer-events: none;
+                                    opacity: 0.5;
+                                    /* Reduce opacity to show it's disabled */
+                                    cursor: not-allowed;
+                                }
+                            </style>
   <!-- Library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <!-- CDN bootstrap icon -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    .text-color{
+      color: #ba0000;
+    }
+  </style>
 </head>
-  <body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
-        <!-- Menu -->
-        <?php include BASE_PATH . 'views/layouts/sidebar.php'; ?>
-        <!-- / Menu -->
-        <!-- Layout container -->
-        <div class="layout-page">
-          <!-- Navbar -->
-          <?php include BASE_PATH . 'views/layouts/navbar.php'; ?>
-          <!-- / Navbar -->
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
-            <div class="container-xxl flex-grow-1 container-p-y">
-              <?php echo $content; ?>
-            </div>
-            <!-- / Content -->
-            <!-- Footer -->
-            <?php include BASE_PATH . 'views/layouts/footer.php'; ?>
-            <!-- / Footer -->
-            <div class="content-backdrop fade"></div>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+      <?php include BASE_PATH . 'views/layouts/sidebar_backend.php'; ?>
+      <!-- / Menu -->
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        <?php include BASE_PATH . 'views/layouts/navbar_backend.php'; ?>
+        <!-- / Navbar -->
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <?php echo $content; ?>
           </div>
-          <!-- Content wrapper -->
+          <!-- / Content -->
+          <!-- Footer -->
+          <?php include BASE_PATH . 'views/layouts/footer_backend.php'; ?>
+          <!-- / Footer -->
+          <div class="content-backdrop fade"></div>
         </div>
-        <!-- / Layout page -->
+        <!-- Content wrapper -->
       </div>
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
+      <!-- / Layout page -->
     </div>
-    <!-- / Layout wrapper -->
-    
-    <!-- Snackbar -->
-    <?php if (isset($_SESSION['snackbar'])): ?>
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                triggerSnackbar(
-                    "<?php echo $_SESSION['snackbar']['message']; ?>",
-                    "<?php echo $_SESSION['snackbar']['type']; ?>"
-                );
-            });
-        </script>
-      <?php unset($_SESSION['snackbar']); ?>
-    <?php endif; ?>
-    <!-- Snackbar Content -->
-    <div id="snackbar">
-        <span class="snackbar-icon" id="snackbar-icon"></span>
-        <span id="snackbar-message"></span>
-        <!-- <button class="snackbar-close" onclick="closeSnackbar()">×</button> -->
-    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
 
-    <!-- Confirm Delete Modal -->
-    <div class="mt-3">
-        <div class="modal fade" id="deleteModal" tabindex="-1" style="display: none;" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Confirm Deletion</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                                    </div>
-                                    <hr />
-                                    <div class="modal-body">Are you sure you want to delete this record?
-                        This action can't be undone.</div>
-                                    <hr />
-                                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
-                            Close
-                        </button>
-                        <a id="confirmDelete" class="btn btn-sm btn-danger" href="#">Confirm</a>
-                        <!-- <button type="submit" ></button> -->
-                    </div>
-                </div>
-            </div>
+  <!-- Snackbar -->
+  <?php if (isset($_SESSION['snackbar'])): ?>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        triggerSnackbar(
+          "<?php echo $_SESSION['snackbar']['message']; ?>",
+          "<?php echo $_SESSION['snackbar']['type']; ?>"
+        );
+      });
+    </script>
+    <?php unset($_SESSION['snackbar']); ?>
+  <?php endif; ?>
+  <!-- Snackbar Content -->
+  <div id="snackbar">
+    <span class="snackbar-icon" id="snackbar-icon"></span>
+    <span id="snackbar-message"></span>
+    <!-- <button class="snackbar-close" onclick="closeSnackbar()">×</button> -->
+  </div>
+
+  <!-- Confirm Delete Modal -->
+  <div class="mt-3">
+    <div class="modal fade" id="deleteModal" tabindex="-1" style="display: none;" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">Confirm Deletion</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <hr />
+          <div class="modal-body">Are you sure you want to delete this record?
+            This action can't be undone.</div>
+          <hr />
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <a id="confirmDelete" class="btn btn-sm btn-danger" href="#">Confirm</a>
+            <!-- <button type="submit" ></button> -->
+          </div>
         </div>
+      </div>
     </div>
-    
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/popper/popper.js"></script>
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/bootstrap.js"></script>
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  </div>
 
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/menu.js"></script>
-    <!-- endbuild -->
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/popper/popper.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/bootstrap.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <!-- Vendors JS -->
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/menu.js"></script>
+  <!-- endbuild -->
 
-    <!-- Main JS -->
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/js/main.js"></script>
+  <!-- Vendors JS -->
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/js/snackbar.js"></script>
+  <!-- Main JS -->
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/js/main.js"></script>
 
-    <!-- Text editor -->
-    <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.min.js"></script>
-    <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/js/snackbar.js"></script>
 
-    <!-- Page JS -->
-    <script src="<?php echo BASE_URL; ?>public/admin/assets/js/dashboards-analytics.js"></script>
+  <!-- Text editor -->
+  <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.min.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/js/tinymce/tinymce.js"></script>
 
-  </body>
+  <!-- Page JS -->
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/js/dashboards-analytics.js"></script>
+
+</body>
+
 </html>

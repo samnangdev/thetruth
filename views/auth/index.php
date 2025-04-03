@@ -1,74 +1,70 @@
 <?php
-include_once '../config/config.php';
-include_once '../connection/db.php';
+require_once '../../config/config.php';
+require_once '../../connection/db.php';
+
 
 session_start();
 
-$error_message = '';
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : ""; // Retrieve error message
+unset($_SESSION['error']); // Clear error message after displaying
 
-if (isset($_SESSION['Username'])) {
-  if ($_SESSION['UserTypeID'] == 1) {
-    header('location: ./admin/index.php');
-  } elseif ($_SESSION['UserTypeID'] == 4) {
-    header('location: ./lecturer/index.php');
-  } elseif ($_SESSION['UserTypeID'] == 5) {
+if (isset($_SESSION['user_id'])) {
+  if ($_SESSION['user_type_id'] == 3) {
+    header("Location: " . BASE_URL . "views/admin/index.php");
+  } elseif ($_SESSION['user_type_id'] == 4) {
+    header("Location: " . BASE_URL . "views/admin/index.php");
+  } elseif ($_SESSION['user_type_id'] == 5) {
     header('location: ./student/index.php');
   }
   exit;
 }
 
-if (isset($_POST['btnLogin'])) {
-  $Role = $_POST['UserTypeID'];
-  $_SESSION['UserTypeID'] = $Role;
-  $Email = mysqli_real_escape_string($conn, $_POST['Email']);
-  $Password = mysqli_real_escape_string($conn, $_POST['Password']);
+// if (isset($_POST['btnLogin'])) {
+//   $Email = mysqli_real_escape_string($conn, $_POST['Email']);
+//   $Password = mysqli_real_escape_string($conn, $_POST['Password']);
 
-  if ($Role == 1 || $Role == 3) {
-    $query = "SELECT * FROM tbluser WHERE Email = '$Email' AND Password_hash = '$Password'";
-  } elseif ($Role == 4) {
-    $query = "SELECT * FROM tbllecturer WHERE Email = '$Email' AND Password_hash = '$Password'";
-  } elseif ($Role == 5) {
-    $query = "SELECT * FROM tblstudentinfo WHERE (StudentID = '$Email' OR Email = '$Email') AND StudentPassword = '" . md5($Password) . "'";
-  }
+//     $query = "SELECT * FROM tbluser WHERE Email = '$Email' AND Password_hash = '$Password'";
 
-  $result = mysqli_query($conn, $query);
 
-  if (mysqli_num_rows($result) > 0) {
+//   $result = mysqli_query($conn, $query);
 
-    $user = mysqli_fetch_array($result);
-    if ($Role == 5 && md5($Password) == md5(1234)) {
-      $_SESSION['StudentID'] = $user['StudentID'];
-      // $_SESSION['ImageName'] = $user['Photo'];
-      header('location: ./verify.php');
-      exit;
-    }
+//   if (mysqli_num_rows($result) > 0) {
 
-    $_SESSION['Username'] = $user['Username'] ?? $user['LecturerNameKH'] ?? $user['NameInLatin'];
-    $_SESSION['UserID'] = $user['UserID'] ?? $user['LecturerID'] ?? $user['StudentID'];
-    $_SESSION['ImageName'] = $user['Photo'];
-    $_SESSION['UserTypeID'] = $Role;
-    $UserTypeName = mysqli_fetch_assoc(mysqli_query($conn, "SELECT UserTypeName FROM tblusertype WHERE UserTypeID = $Role"))['UserTypeName'] ?? '';
-    $_SESSION['UserTypeName'] = $UserTypeName;
+//     $user = mysqli_fetch_array($result);
+//     if ($Role == 5 && md5($Password) == md5(1234)) {
+//       $_SESSION['StudentID'] = $user['StudentID'];
+//       // $_SESSION['ImageName'] = $user['Photo'];
+//       header('location: ./verify.php');
+//       exit;
+//     }
 
-    if ($Role == 1 || $Role == 3) {
-      header('location: ./admin/index.php');
-    } elseif ($Role == 4) {
-      header('location: ./lecturer/index.php');
-    } elseif ($Role == 5) {
-      $_SESSION['StudentID'] = $user['StudentID'];
-      $_SESSION['ImageName'] = $user['Photo'];
-      header('location: ./student/index.php');
-    }
-    exit;
-  } else {
-    $error_message = "Invalid email, student ID, or password.";
-  }
-}
+//     $_SESSION['Username'] = $user['Username'] ?? $user['LecturerNameKH'] ?? $user['NameInLatin'];
+//     $_SESSION['UserID'] = $user['UserID'] ?? $user['LecturerID'] ?? $user['StudentID'];
+//     $_SESSION['ImageName'] = $user['Photo'];
+//     $_SESSION['UserTypeID'] = $Role;
+//     $UserTypeName = mysqli_fetch_assoc(mysqli_query($conn, "SELECT UserTypeName FROM tblusertype WHERE UserTypeID = $Role"))['UserTypeName'] ?? '';
+//     $_SESSION['UserTypeName'] = $UserTypeName;
+
+//     if ($Role == 1 || $Role == 3) {
+//       header('location: ./admin/index.php');
+//     } elseif ($Role == 4) {
+//       header('location: ./lecturer/index.php');
+//     } elseif ($Role == 5) {
+//       $_SESSION['StudentID'] = $user['StudentID'];
+//       $_SESSION['ImageName'] = $user['Photo'];
+//       header('location: ./student/index.php');
+//     }
+//     exit;
+//   } else {
+//     $error_message = "Invalid email, student ID, or password.";
+//   }
+// }
+// 
 ?>
 
 <!DOCTYPE html>
 <html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default"
-  data-assets-path="<?php echo BASE_URL; ?>public/assets/" data-template="vertical-menu-template-free">
+  data-assets-path="<?php echo BASE_URL; ?>public/admin/assets/" data-template="vertical-menu-template-free">
 
 <head>
   <meta charset="utf-8" />
@@ -80,33 +76,33 @@ if (isset($_POST['btnLogin'])) {
   <meta name="description" content="" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?> public/assets/img/favicon/logo-3.ico" />
+  <link rel="icon" type="image/x-icon" href="<?php echo BASE_URL; ?> public/admin/assets/img/favicon/logo-3.ico" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
-    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Public/admin+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet" />
 
   <!-- Icons. Uncomment required icon fonts -->
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/vendor/fonts/boxicons.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/vendor/css/core.css" class="template-customizer-core-css" />
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/css/demo.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/css/demo.css" />
 
   <!-- Vendors CSS -->
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
   <!-- Page CSS -->
 
   <!-- Page -->
-  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/assets/vendor/css/pages/page-auth.css" />
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>public/admin/assets/vendor/css/pages/page-auth.css" />
   <!-- Helpers -->
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/js/helpers.js"></script>
-  <script src="<?php echo BASE_URL; ?>public/assets/js/config.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/helpers.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/js/config.js"></script>
 </head>
 
 <body>
@@ -119,50 +115,37 @@ if (isset($_POST['btnLogin'])) {
         <div class="card">
           <div class="card-body">
             <!-- Logo -->
-            <div class="mb-4 app-brand justify-content-center">
-              <a href="#index" class="app-brand-link gap-2">
+            <div class="mb-3 app-brand justify-content-center">
+              <a href="<?php echo BASE_URL ?>views/" class="app-brand-link gap-2">
                 <span class="app-brand-logo demo">
-                  <img width="305px" src="<?php echo BASE_URL; ?>public/assets/img/logo/logo-4.png">
+                  <img width="120px" src="<?php echo BASE_URL; ?>storage/uploads/logo/logo-1.png">
                 </span>
               </a>
             </div>
-            <?php if (!empty($error_message)) { ?>
-              <p class="mb-3 text-center text-danger">
-                <?= htmlspecialchars($error_message) ?>
+            <?php if (!empty($error)) { ?>
+              <p class="mb-2 text-center text-danger">
+                <?php echo $error; ?>
               </p>
             <?php } else { ?>
-              <h5 class="mb-3 text-center">Welcome to UMS168</h5>
+              <h6 class="mb-3 text-center">Welcome back! Please log in to continue.</h6>
             <?php } ?>
-            <form id="formAuthentication" class="mb-3" action="" method="POST">
+            <form action="<?php echo BASE_URL ?>controllers/auth/LoginController.php" enctype="multipart/form-data" method="POST" id="formAuthentication" class="mb-3">
               <div class="mb-2">
-                <label for="email" class="form-label">Select Role</label>
-                <select class="form-control form-select" name="UserTypeID">
-                  <?php
-                  $rows = mysqli_query($conn, "SELECT * FROM tblusertype");
-                  foreach ($rows as $row) {
-                  ?>
-                    <option value="<?php echo $row['UserTypeID'] ?>"><?php echo $row['UserTypeName'] ?></option>
-                  <?php
-                  }
-                  ?>
-                </select>
-              </div>
-              <div class="mb-2">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" required class="form-control" id="email" name="Email"
-                  placeholder="Enter your email or username" />
+                <label for="email" style="font-size: 14px;" class="form-label">Email</label>
+                <input type="text" required class="form-control" id="email" name="TxtEmail"
+                  placeholder="Email or Username" />
               </div>
               <div class="mb-3 form-password-toggle">
                 <div class="d-flex justify-content-between">
-                  <label class="form-label" for="password">Password</label>
+                  <label class="form-label" style="font-size: 14px;" for="password">Password</label>
                 </div>
                 <div class="input-group input-group-merge">
-                  <input type="password" required id="password" class="form-control" name="Password"
+                  <input type="password" required id="password" class="form-control" name="TxtPassword"
                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                     aria-describedby="password" />
                   <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                 </div>
-                <a href="#" class="float-end">
+                <a href="#" class="float-end text-light">
                   <small>Forgot Password?</small>
                 </a>
               </div>
@@ -173,8 +156,13 @@ if (isset($_POST['btnLogin'])) {
                 </div>
               </div>
               <div class="mb-3">
-                <button class="btn btn-primary d-grid w-100" name="btnLogin" type="submit">SIGN IN</button>
+                <button class="btn btn-login text-white d-grid w-100" style="background-color:rgb(201, 0, 0);" name="btnLogin" type="submit">SIGN IN</button>
               </div>
+              <style>
+                button.btn-login:hover {
+                  background-color: rgb(154, 1, 1) !important;
+                }
+              </style>
             </form>
           </div>
         </div>
@@ -187,18 +175,18 @@ if (isset($_POST['btnLogin'])) {
 
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/libs/jquery/jquery.js"></script>
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/libs/popper/popper.js"></script>
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/js/bootstrap.js"></script>
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/popper/popper.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/bootstrap.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-  <script src="<?php echo BASE_URL; ?>public/assets/vendor/js/menu.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/vendor/js/menu.js"></script>
   <!-- endbuild -->
 
   <!-- Vendors JS -->
 
   <!-- Main JS -->
-  <script src="<?php echo BASE_URL; ?>public/assets/js/main.js"></script>
+  <script src="<?php echo BASE_URL; ?>public/admin/assets/js/main.js"></script>
 
   <!-- Page JS -->
 

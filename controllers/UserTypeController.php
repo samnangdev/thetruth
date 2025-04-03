@@ -22,11 +22,17 @@ if (isset($_GET['delet_id'])) {
     $UserTypeController->delete($id);
 }
 
+if (isset($_GET['update_id']) && isset($_GET['status'])) {
+    $id = $_GET['update_id'];  
+    $status = $_GET['status'];  
+    $UserController = new UserTypeController();
+    $UserController->status($id, $status);
+}
 class UserTypeController {
     public function list() {
         global $conn;  
 
-        $query = "SELECT * FROM user_type_tbl WHERE status = 1 ORDER BY ID ASC";
+        $query = "SELECT * FROM user_type_tbl ORDER BY ID ASC";
     
         $stid = oci_parse($conn, $query);
         oci_execute($stid);
@@ -127,7 +133,7 @@ class UserTypeController {
     public function delete($id) {
         global $conn; 
 
-        $sql = "UPDATE user_type_tbl SET STATUS = 0 WHERE id = :id";
+        $sql = "DELETE FROM user_type_tbl WHERE id = :id";
     
         $stid = oci_parse($conn, $sql);
         oci_bind_by_name($stid, ":id", $id);
@@ -147,5 +153,36 @@ class UserTypeController {
         }
     
         oci_free_statement($stid);
+    }
+    public function status($id, $status) {
+        global $conn; // Use global database connection
+    
+        // Ensure status is either 0 or 1
+        $status = ($status == 1) ? 1 : 0;
+    
+        // Prepare SQL update query
+        $sql = "UPDATE User_Type_Tbl SET STATUS = :status WHERE id = :id";
+    
+        $stid = oci_parse($conn, $sql);
+        oci_bind_by_name($stid, ":status", $status);
+        oci_bind_by_name($stid, ":id", $id);
+    
+        // Execute the query
+        $result = oci_execute($stid, OCI_COMMIT_ON_SUCCESS);
+    
+        if ($result) {
+            oci_commit($conn); // Commit transaction
+            $_SESSION['snackbar'] = ['message' => 'Status updated successfully!', 'type' => 'success'];
+        } else {
+            $_SESSION['snackbar'] = ['message' => 'Oops! Something went wrong.', 'type' => 'error'];
+            $e = oci_error($stid);
+            echo "Error updating record: " . $e['message'];
+        }
+    
+        oci_free_statement($stid);
+    
+        // Redirect back
+        header('Location: ' . BASE_URL . 'views/admin/user_type/index.php');
+        exit();
     }
 }

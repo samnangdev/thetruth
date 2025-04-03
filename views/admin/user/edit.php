@@ -29,6 +29,13 @@ $user = $UserController->editUser($id);
             <div class="card-body">
                 <form action="<?php echo BASE_URL ?>controllers/UserController.php" method="POST">
                     <div class="row">
+                    <div class="col-sm-6">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Name In Kh</label>
+                                <input type="text" name="TxtNameInKh" class="form-control"
+                                    value="<?php echo isset($user['NAME_IN_KH']) ? $user['NAME_IN_KH'] : ''; ?>" placeholder="Example" />
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Username</label>

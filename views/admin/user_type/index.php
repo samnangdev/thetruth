@@ -42,27 +42,27 @@ $title = "List User Type";
                     <?php 
                     $UserTypeController = new UserTypeController();
                     $rows = $UserTypeController->list();
-                    foreach ($rows as $row): 
                     $No = 1;
+                    foreach ($rows as $row): 
                     ?>
                     <tr>
                         <td><?php echo $No ?></td>
                         <td><?php echo $row['ID']; ?></td>
                         <td><?php echo empty($row['NAME_KH']) ? 'N/A' : $row['NAME_KH'] ?></td>
                         <td><?php echo empty($row['NAME_EN']) ? 'N/A' : $row['NAME_EN'] ?></td>
-                        <td class="text-center">
-                        <?php
-                        if ($row['STATUS'] == 1){
-                            ?>
-                            <span class="badge bg-label-primary me-1">Active</span>
-                            <?php
-                        }else{
-                            ?>
-                            <span class="badge bg-label-danger me-1">Inactive</span>
-                        <?php 
-                        }
-                        ?>
-                        </td>
+                        <td>
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-check form-switch">
+                                        <input
+                                            class="form-check-input toggle-status <?php echo ($_SESSION['user_type_name'] === 'Author') ? 'disabled-link' : ''; ?>"
+                                            type="checkbox"
+                                            role="switch"
+                                            id="flexSwitchCheckChecked_<?php echo $row['ID']; ?>"
+                                            data-id="<?php echo $row['ID']; ?>"
+                                            <?php echo ($row['STATUS'] == 1) ? 'checked' : ''; ?>>
+                                    </div>
+                                </div>
+                            </td>
                         <td class="text-center">
                                 <a href="edit.php?id=<?php echo $row['ID']; ?>">
                                     <i class="bx bxs-edit"></i>
@@ -83,6 +83,20 @@ $title = "List User Type";
         </div>
     </div>
 </div>
+<!-- Script change status -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".toggle-status").forEach(function(checkbox) {
+            checkbox.addEventListener("change", function() {
+                let id = this.getAttribute("data-id"); // Get category ID
+                let newStatus = this.checked ? 1 : 0; // Get status (1 = checked, 0 = unchecked)
+
+                // Redirect with parameters
+                window.location.href = `<?php echo BASE_URL ?>controllers/UserTypeController.php?update_id=${id}&status=${newStatus}`;
+            });
+        });
+    });
+</script>
 <!-- Script confirm delete -->
 <script>
 $(document).ready(function () {

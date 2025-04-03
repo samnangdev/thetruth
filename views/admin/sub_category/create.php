@@ -23,8 +23,15 @@ $title = "Create Sub Catagory";
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Name</label>
-                                        <input type="text" name="TxtName" class="form-control"
+                                        <label for="exampleFormControlInput1" class="form-label">NameKH</label>
+                                        <input type="text" name="TxtNameKH" class="form-control"
+                                            value="" placeholder="Example" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">NameEN</label>
+                                        <input type="text" name="TxtNameEN" class="form-control"
                                             value="" placeholder="Example" />
                                     </div>
                                 </div>
@@ -37,22 +44,17 @@ $title = "Create Sub Catagory";
                                             </option>
                                             <?php 
                                                 $MainCategoryController = new MainCategoryController();
-                                                $rows = $MainCategoryController->list();
+                                                $rows = $MainCategoryController->listForSelect();
                                                 foreach ($rows as $row):
                                             ?> 
                                                 <option value="<?php echo $row['ID']; ?>">
-                                                    <?php echo $row['NAME']; ?>
+                                                    <?php echo $row['NAME_KH']; ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
-                                    <div class="mb-3">
-                                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                                        <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-sm-6">
                                     <div class="mb-3">
                                         <label for="defaultSelect" class="form-label">Status</label>
@@ -63,6 +65,12 @@ $title = "Create Sub Catagory";
                                             <option value="1" selected>Active</option>
                                             <option value="0">Inactive</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                                        <textarea name="TxtDesc" class="form-control" id="exampleFormControlTextarea1" rows="4"></textarea>
                                     </div>
                                 </div>
                                 

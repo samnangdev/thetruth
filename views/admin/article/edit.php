@@ -37,45 +37,14 @@ $art = $ArticleController->edit($id);
                                     </option>
                                     <?php
                                     $MainCategoryController = new MainCategoryController();
-                                    $main_rows = $MainCategoryController->list();
+                                    $main_rows = $MainCategoryController->listForSelect();
                                     foreach ($main_rows as $row):
                                     $selected = ($row['ID'] == $art['MAIN_CATEGORY_ID']) ? 'selected' : '';
                                     ?>
                                         <option value="<?php echo $row['ID']; ?>" <?php echo $selected ?>>
-                                            <?php echo $row['NAME']; ?>
+                                            <?php echo $row['NAME_KH']; ?>
                                         </option>
                                     <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="defaultSelect" class="form-label">Sub Category</label>
-                                <select name="TxtSubCategoryID" class="form-select">
-                                    <option select hidden>
-                                        --------------------------------------------------------------------------------------------------------------------------------------------------
-                                    </option>
-                                    <?php
-                                    $SubCategoryController = new SubCategoryController();
-                                    $sub_rows = $SubCategoryController->list();
-                                    foreach ($sub_rows as $row):
-                                    $selected = ($row['ID'] == $art['SUB_CATEGORY_ID']) ? 'selected' : '';
-                                    ?>
-                                        <option value="<?php echo $row['ID']; ?>" <?php echo $selected ?>>
-                                            <?php echo $row['NAME']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="defaultSelect" class="form-label">Status</label>
-                                <select name="TxtStatus" class="form-select">
-                                    <option select hidden>--------------------------------------------------------------------------------------------------------------------------------------------------</option>
-                                    <option value="Published" <?php echo ($art['STATUS'] == 'Published') ? 'selected' : ''; ?>>Published</option>
-                                    <option value="Draft" <?php echo ($art['STATUS'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
-                                    <option value="Archived" <?php echo ($art['STATUS'] == 'Archived') ? 'selected' : ''; ?>>Archived</option>
                                 </select>
                             </div>
                         </div>
@@ -86,11 +55,9 @@ $art = $ArticleController->edit($id);
                                     value="<?php echo isset($art['TITLE']) ? $art['TITLE'] : ''; ?>" placeholder="Example" />
                             </div>
                         </div>
-                        <?php
-                        $current_date = date("Y-m-d");
-                        ?>
-                        <input type="hidden" name="TxtPublishedDate" class="form-control"
-                        value="<?php echo $current_date ?>"/>
+                        
+                        <!-- <input type="hidden" name="TxtPublishedDate" class="form-control"
+                        value="<?php echo $current_date ?>"/> -->
                         <div class="col-sm-4">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput1" class="form-label">Author</label>
@@ -103,6 +70,28 @@ $art = $ArticleController->edit($id);
                                 <label for="exampleFormControlInput1" class="form-label">Reference</label>
                                 <input type="text" name="TxtReference" class="form-control"
                                     value="<?php echo isset($art['REFERENCE']) ? $art['REFERENCE'] : ''; ?>" placeholder="Example" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="defaultSelect" class="form-label">Status</label>
+                                <select name="TxtStatus" class="form-select">
+                                    <option select hidden>--------------------------------------------------------------------------------------------------------------------------------------------------</option>
+                                    <option value="Published" <?php echo ($art['STATUS'] == 'Published') ? 'selected' : ''; ?>>Published</option>
+                                    <option value="Draft" <?php echo ($art['STATUS'] == 'Draft') ? 'selected' : ''; ?>>Draft</option>
+                                    <option value="Archived" <?php echo ($art['STATUS'] == 'Archived') ? 'selected' : ''; ?>>Archived</option>
+                                    <option value="Slide" <?php echo ($art['STATUS'] == 'Slide') ? 'selected' : ''; ?>>Slide</option>
+                                </select>
+                            </div>
+                        </div>
+                        <?php
+                        $current_date = date("Y-m-d");
+                        ?>
+                        <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="exampleFormControlInput1" class="form-label">Published Date</label>
+                                <input type="text" name="TxtPublishedDate" class="form-control"
+                                    value="<?php echo $current_date ?>" placeholder="Example" />
                             </div>
                         </div>
                         <div class="col-sm-12">
@@ -157,3 +146,23 @@ $art = $ArticleController->edit($id);
 $content = ob_get_clean();
 include BASE_PATH . 'views/admin/master.php';
 ?>
+<!-- <div class="col-sm-4">
+                            <div class="mb-3">
+                                <label for="defaultSelect" class="form-label">Sub Category</label>
+                                <select name="TxtSubCategoryID" class="form-select">
+                                    <option select hidden>
+                                        --------------------------------------------------------------------------------------------------------------------------------------------------
+                                    </option>
+                                    <?php
+                                    $SubCategoryController = new SubCategoryController();
+                                    $sub_rows = $SubCategoryController->list();
+                                    foreach ($sub_rows as $row):
+                                    $selected = ($row['ID'] == $art['SUB_CATEGORY_ID']) ? 'selected' : '';
+                                    ?>
+                                        <option value="<?php echo $row['ID']; ?>" <?php echo $selected ?>>
+                                            <?php echo $row['NAME']; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div> -->
